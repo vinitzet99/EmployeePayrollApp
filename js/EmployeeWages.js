@@ -123,6 +123,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
 const save = () => {
   try {
     let employeePayrollData = createEmployeePayroll();
+    createAndUpdateStorage(employeePayrollData);
     alert("Details Saved")
   } catch (e) {
     alert(e);
@@ -179,3 +180,20 @@ const getInputElementValue = (id) => {
   let value = documentegetElementBy(id).value;
   return value;
 };
+
+
+//updateLocalStorage
+function createAndUpdateStorage(employeePayrollData) {
+  let employeePayrollList = JSON.parse(
+    localStorage.getItem("EmployeePayrollList")
+  );
+  if (employeePayrollList != undefined) {
+    employeePayrollList.push(employeePayrollData);
+  } else {
+    employeePayrollList = [employeePayrollData];
+  }
+  localStorage.setItem(
+    "EmployeePayrollList",
+    JSON.stringify(employeePayrollList)
+  );
+}
