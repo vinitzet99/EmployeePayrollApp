@@ -1,3 +1,5 @@
+
+
 class EmployeePayrollData {
   // getter and setter method
   get name() {
@@ -54,7 +56,14 @@ class EmployeePayrollData {
   }
 
   set startDate(startDate) {
-    this._startDate = startDate;
+    let actualDate = new Date(startDate).getTime();
+    let currentDate = new Date().getTime();
+    if(actualDate>currentDate)
+    {    
+      throw "Future Date. Date is Invalid"
+    }
+    else
+      this._startDate = new Date(startDate).toLocaleDateString();
   }
   // method
   toString() {
@@ -109,3 +118,64 @@ window.addEventListener("DOMContentLoaded", (event) => {
     }
   });
 });
+
+//save event
+const save = () => {
+  try {
+    let employeePayrollData = createEmployeePayroll();
+    alert("Details Saved")
+  } catch (e) {
+    alert(e);
+    return;
+  }
+};
+
+//create data object
+const createEmployeePayroll = () => {
+  let employeePayrollData = new EmployeePayrollData();
+  try {
+  } catch (e) {
+    setTextValue(".text-error", e);
+    throw e;
+  }
+  try {
+    employeePayrollData.name = getInputValueById("#name");
+    let date =
+    getInputValueById("#day") +
+    " " +
+    getInputValueById("#month") +
+    " " +
+    getInputValueById("#year");
+    employeePayrollData.startDate=Date.parse(date);
+  } catch(e){
+    throw e
+  }
+  employeePayrollData.profilePic = getSelectedValues("[name=profile]").pop();
+  employeePayrollData.gender = getSelectedValues("[name=gender]").pop();
+  employeePayrollData.department = getSelectedValues("[name=department]");
+  employeePayrollData.salary = getInputValueById("#salary");
+  employeePayrollData.note = getInputValueById("#notes");
+  return employeePayrollData;
+};
+
+//selectedValue Method
+const getSelectedValues = (propertyValue) => {
+  let allItems = document.querySelectorAll(propertyValue);
+  let selItems = [];
+  allItems.forEach((item) => {
+    if (item.checked) selItems.push(item.value);
+  });
+  return selItems;
+};
+
+//getInputValueById
+const getInputValueById = (id) => {
+  let value = document.querySelector(id).value;
+  return value;
+};
+
+//getInputValueByValue
+const getInputElementValue = (id) => {
+  let value = documentegetElementBy(id).value;
+  return value;
+};
