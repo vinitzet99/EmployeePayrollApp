@@ -125,6 +125,7 @@ const save = () => {
     let employeePayrollData = createEmployeePayroll();
     createAndUpdateStorage(employeePayrollData);
     alert("Details Saved")
+    resetForm()
   } catch (e) {
     alert(e);
     return;
@@ -147,6 +148,8 @@ const createEmployeePayroll = () => {
     getInputValueById("#month") +
     " " +
     getInputValueById("#year");
+    if(date=="  ")
+      throw "Invalid Date"
     employeePayrollData.startDate=Date.parse(date);
   } catch(e){
     throw e
@@ -197,3 +200,35 @@ function createAndUpdateStorage(employeePayrollData) {
     JSON.stringify(employeePayrollList)
   );
 }
+
+
+//reset form
+const resetForm = () => { 
+  setValue('#name',''); 
+  unsetSelectedValues('[name=profile]'); 
+  unsetSelectedValues('[name=gender]'); 
+  unsetSelectedValues('[fname=department]'); 
+  setValue('#salary',''); 
+  setValue('#notes',''); 
+  setValue('#day',''); 
+  setValue('#month',''); 
+  setValue('#year',''); 
+}
+
+const unsetSelectedValues = (propertyValue) => 
+{ 
+  let allItems = document.querySelectorAll(propertyValue); 
+  allItems.forEach(item => {
+    item.checked = false; 
+  }); 
+} 
+
+const setTextValue = (id, value) => {
+  const element = document.querySelector(id); 
+  element.textContent = value; 
+} 
+
+const setValue = (id, value) => {
+  const element = document.querySelector(id); 
+  element.value = value; 
+} 
