@@ -68,6 +68,12 @@ class EmployeePayrollData {
     let currentDate = new Date().getTime();
     if (actualDate > currentDate) {
       throw "Future Date. Date is Invalid";
+    } else if (
+      Math.abs(currentDate - actualDate) /
+        (1000 * 60 * 60 * 24) >
+      30
+    ) {
+      throw "Start Date is beyond 30 days.";
     } else this._startDate = new Date(startDate).toLocaleDateString();
   }
   // method
@@ -142,11 +148,6 @@ const save = () => {
 const createEmployeePayroll = () => {
   let employeePayrollData = new EmployeePayrollData();
   try {
-  } catch (e) {
-    setTextValue(".text-error", e);
-    throw e;
-  }
-  try {
     employeePayrollData.name = getInputValueById("#name");
     let date =
       getInputValueById("#day") +
@@ -195,15 +196,26 @@ function createAndUpdateStorage(employeePayrollData) {
   let employeePayrollList = JSON.parse(
     localStorage.getItem("EmployeePayrollList")
   );
-  if (employeePayrollList != undefined) {
-    employeePayrollList.push(employeePayrollData);
-  } else {
-    employeePayrollList = [employeePayrollData];
+  if (!isUpdate) {
+    if (employeePayrollList != undefined) {
+      employeePayrollList.push(employeePayrollData);
+    } else {
+      employeePayrollList = [employeePayrollData];
+    }
+    localStorage.setItem(
+      "EmployeePayrollList",
+      JSON.stringify(employeePayrollList)
+    );
   }
-  localStorage.setItem(
-    "EmployeePayrollList",
-    JSON.stringify(employeePayrollList)
-  );
+  else{
+    let data = employeePayrollList.find((empData) => empData._id == localStorage.getItem("empEdit"));
+    let index=employeePayrollList.indexOf(data)
+    employeePayrollList[index]=employeePayrollData;
+    localStorage.setItem("EmployeePayrollList",JSON.stringify(employeePayrollList))
+    localStorage.removeItem("empEdit");
+    alert("Update Succesfully")
+    window.location.replace("../pages/homepage.html")
+  }
 }
 
 //reset form

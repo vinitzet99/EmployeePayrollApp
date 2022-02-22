@@ -3,7 +3,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
   empPayrollList = getEmployeeDataFromStorage();
   document.querySelector(".emp-count").textContent = empPayrollList.length;
   createInnerHtml();
-  localStorage.removeItem("editEmp");
+  if(localStorage.getItem("empEdit")) {
+    localStorage.removeItem("empEdit") }
 });
 
 const getEmployeeDataFromStorage = () => {
@@ -45,7 +46,6 @@ const getDeptHtml = (deptList) => {
 };
 
 const remove = (node) => {
-  alert(node)
   let empPayrollData = empPayrollList.find(empData => empData._id == node); 
   if (!empPayrollData) 
     return; 
@@ -54,7 +54,7 @@ const remove = (node) => {
   localStorage.setItem("EmployeePayrollList", JSON.stringify(empPayrollList)); 
   document.querySelector(".emp-count").textContent = empPayrollList.length;
   alert("Deleted")
-  createInnerHtml(); 
+  window.location.reload() 
 } 
 
 const update=(node)=>{
