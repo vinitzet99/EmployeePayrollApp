@@ -29,7 +29,7 @@ const createInnerHtml = () => {
     <td>${empPayrollData._startDate}</td> 
     <td> 
       <img name="${empPayrollData._id}" onClick="remove(${empPayrollData._id})" src="../assets/icons/delete-black-18dp.svg" alt="delete">
-      <img name="${empPayrollData._id}" onclick="update(this)" src="../assets/icons/create-black-18dp.svg" alt="edit">    
+      <img name="${empPayrollData._id}" onclick="update(${empPayrollData._id})" src="../assets/icons/create-black-18dp.svg" alt="edit">    
     </td> 
   </tr>`;
   }
@@ -56,3 +56,8 @@ const remove = (node) => {
   alert("Deleted")
   createInnerHtml(); 
 } 
+
+const update=(node)=>{
+  localStorage.setItem("empEdit",node)
+  window.location.replace("../pages/form.html")
+}
